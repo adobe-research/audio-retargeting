@@ -28,7 +28,7 @@ parser.add_argument('--no-start', dest='start', action='store_false', help='Do n
 parser.add_argument('--end', dest='end', action='store_true', help='Require result to end at song end. [default]')
 parser.add_argument('--no-end', dest='end', action='store_false', help='Do not require result to end at song end')
 parser.add_argument('--cache', metavar='DIR', type=Path, help='Cache directory [{0}]'.format(cachedir()), default=cachedir())
-parser.add_argument('--no-cache', dest='cache', action='store_const', const=None, help='Do not use cache directory')
+parser.add_argument('--no-cache', dest='cache', action='store_const', const=None, help='Do not use cache')
 parser.add_argument('-q', '--quiet', action='store_true', help="Quiet; do not print processing info.")
 parser.add_argument('input', metavar='INFILE', type=str, help='Audio file to retarget (WAV format)')
 parser.set_defaults(start=True, end=True)
