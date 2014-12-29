@@ -17,7 +17,7 @@ def cachedir():
     return None if root is None else root.joinpath("retarget")
 
 parser = argparse.ArgumentParser(
-        description='Retargets music to desired length.  Prints new file name to stdout.',
+        description='Retargets music to desired length, with optional change point constraints.',
         usage='retarget [options] INFILE'
         )
 parser.add_argument('-l', '--length', metavar='LENGTH', type=int, help='New length in seconds [default: {0}]'.format(defaultlength), default=defaultlength)
