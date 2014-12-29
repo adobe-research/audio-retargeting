@@ -5,7 +5,7 @@ A simple CLI front-end to the retargeting features of--and installation instruct
 The CLI is a command named `retarget.py` or `retarget` (depending on how it's installed, see below).  For example, to retarget a song to be 30 seconds long, use:
 
 ```
-$ retarget -l 30 mysong.wav
+$ retarget.py -l 30 mysong.wav
 input:	mysong.wav
 output:	mysong-30.wav
 length:	30
@@ -22,7 +22,7 @@ This script uses [radiotool](https://github.com/ucbvislab/radiotool)'s caching m
 For complete usage instructions, run:
 
 ```
-$ retarget --help
+$ retarget.py --help
 ```
 
 ## Installation
@@ -33,7 +33,7 @@ Prerequisites:
 
 * *Package manager:* On OS X it's good to use [homebrew](http://brew.sh) to simplify installing various dependencies.  In a `bash` or `zsh` shell:
 
-      $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
   [homebrew](http://brew.sh) can then check that your development environment is OK is in order:
 
@@ -42,7 +42,7 @@ Prerequisites:
 
 * *Python:* You need to have a working installation of python 2.7.*.  On OS X, the system python should work, but you may want to install `/usr/local/bin/python` using [homebrew](http://brew.sh), to get the latest and to avoid needing to `sudo` in order to install the necessary python packages.
 
-      $ brew install python
+		$ brew install python
 
 
 ### Installing radiotool
@@ -88,7 +88,7 @@ Once you've installed radiotool as per the above instructions, installing `retar
 	    $ cd retarget-py
         $ python setup.py install
         
-This will install `retarget.py` into your path.  This is a python script that depends on the succesfull installation of radiotool and its dependencies.
+This will install `retarget.py` into your path.  `retarget.py` is a python script that depends at runtime on radiotool and its dependencies having been succesfully installed.
 
 ### (Optional) Creating a standalone `retarget` executable
 
