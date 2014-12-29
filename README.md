@@ -2,7 +2,30 @@
 
 A simple CLI front-end to the retargeting features of--and installation instructions for--the [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library.
 
-## A. Installation
+The CLI is a command named `retarget.py` or `retarget` (depending on how it's installed, see below).  For example, to retarget a song to be 30 seconds long, use:
+
+```
+$ retarget -l 30 mysong.wav
+input:	mysong.wav
+output:	mysong-30.wav
+length:	30
+change_points:
+start:	True
+end:	True
+cache:	/Users/ronen/Library/Caches/retarget
+Retargeting...
+Wrote mysong-30.wav
+```
+	
+This script uses [radiotool](https://github.com/ucbvislab/radiotool)'s caching mechanism: The first time you run it for a given input file will take some time to analyze the song and will cache the .  Subsequent runs with different options for the same input will be very fast.
+
+For complete usage instructions, run:
+
+```
+$ retarget --help
+```
+
+## Installation
 
 Prerequisites: 
 
@@ -22,7 +45,7 @@ Prerequisites:
       $ brew install python
 
 
-### A.1 Installing radiotool
+### Installing radiotool
 
 1. [radiotool](https://github.com/ucbvislab/radiotool) requires that your system have [libsndfile](http://www.mega-nerd.com/libsndfile/) and [libsamplerate](http://www.mega-nerd.com/SRC/) installed.  On OS X, the easest way to install them is using [homebrew](http://brew.sh):
 
@@ -67,11 +90,11 @@ Once you've installed radiotool as per the above instructions, installing `retar
         
 This will install `retarget.py` into your path.  This is a python script that depends on the succesfull installation of radiotool and its dependencies.
 
-### Creating a standalone executable `retarget` for distribution
+### (Optional) Creating a standalone `retarget` executable
 
-(Optional) Once you've gotten radiotool and retarget.py installed, you can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
+Once you've installed `radiotool` and `retarget.py`, you can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
 
-Unfortunately `radiotool` tickles a bug in the current official release of `pyinstaller`, so you need to install the latest version from the source:
+Unfortunately `radiotool` uses some libraries that tickle a bug in the current official release (2.1) of `pyinstaller`.  This has been fixed for future releases, but for now you need to install the latest version of pyinstaller from the source:
 
     	$ git clone https://github.com/pyinstaller/pyinstaller.git
 	    $ cd pyinstaller
@@ -82,9 +105,9 @@ You can then run pyinstaller, with some necessary magic options for it to succes
 		$ cd retarget.py
 		$ pyinstaller \
 			--onefile \
+			--hidden-import=scipy.special._ufuncs_cxx \
 			--hidden-import=sklearn.utils.sparsetools._graph_validation \
 			--hidden-import=sklearn.utils.sparsetools._graph_tools \
-			--hidden-import=scipy.special._ufuncs_cxx \
 			--hidden-import=sklearn.utils.lgamma \
 			--hidden-import=sklearn.utils.weight_vector \
 			--hidden-import=sklearn.neighbors.typedefs \
@@ -94,55 +117,9 @@ You can then run pyinstaller, with some necessary magic options for it to succes
 			
 (You may see `RuntimeError: The WebAgg backend requires Tornado.` and `UserWarning: error getting fonts from fc-list`.  These can be safely ignored.)
 
-The resulting executable is available in `dist/retarget`.  It can be run by anyone with a similar platform to the one you build it on, without needing to perform any of the installation steps listed above.
+The resulting executable is`dist/retarget`.  It can be run by anyone with a similar platform to the one you build it on, without needing to perform any of the installation steps listed above.
 
-    $ dist/retarget
-
-## Usage instructions
-
-For instructions on using `retarget.py` or `retarget` run with the --help option:
-
-```
-$ retarget --help
-usage: retarget [options] INFILE
-
-Retargets music to desired length, with optional change point constraints.
-
-positional arguments:
-  INFILE                Audio file to retarget (WAV format)
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -l LENGTH, --length LENGTH
-                        New length in seconds [default: 60]
-  -o OUTFILE, --output OUTFILE
-                        Output WAV file. [default: INFILE-LENGTH.wav]
-  -c POINT, --changes POINT
-                        Change point time in seconds. Can be provided multiple
-                        times. If change points are specified, that implies
-                        --no-start and --no-end
-  --start               Require result to start at song start. [default]
-  --no-start            Do not require result to start at song start
-  --end                 Require result to end at song end. [default]
-  --no-end              Do not require result to end at song end
-  --cache DIR           Cache directory [/Users/ronen/Library/Caches/retarget]
-  --no-cache            Do not use cache directory
-  -q, --quiet           Quiet; do not print processing info.
-```
-This script uses [radiotool](https://github.com/ucbvislab/radiotool)'s caching mechanism: The first time you run it for a given input file will take some time to analyze the song.  Subsequent runs for the same input will be very fast.
-
-
-		
-
-
-
-
-
-
-
-
-  
-	
-
-
+    	$ dist/retarget --help
+	    ...
+    	$ cp dist/retarget /some/shared/bin/directory
 
