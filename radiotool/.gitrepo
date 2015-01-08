@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:ucbvislab/radiotool.git
+	branch = master
+	commit = e7f44ca37b5984d3b7863099ed6242a989a9d0ad
+	parent = d80254ac4237018c4d89731bf7808d7f560926d2
+	cmdver = 0.1.0
