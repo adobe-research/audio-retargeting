@@ -2,10 +2,11 @@
 
 This repository contains:
 
-* `radiotool` -- The [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library.
+* `radiotool` -- The [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library. 
+  > `radiotool` is included here as a [git subrepo](https://github.com/ingydotnet/git-subrepo).  This means that a copy of the source is available here and can be worked on locally.  (But if you want to pull a newer version from [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) or submit changes to it, you'll need to install the [git-subrepo](https://github.com/ingydotnet/git-subrepo) commands.)
+
 * `retarget.py` -- A simple CLI front-end to the retargeting features of `radiotool`
 
-`radiotool` is included here as a [git subrepo](https://github.com/ingydotnet/git-subrepo).  This means that the entire repo is available here and can be worked on locally.  (But if you want to pull a newer version from [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) or submit changes to it, you'll need to install the [git-subrepo](https://github.com/ingydotnet/git-subrepo) commands.)
 
 ---
 
@@ -84,6 +85,8 @@ radiotool 0.4.3
 *** retarget.py ***
 Installed /usr/local/bin/retarget.py
 ```
+
+This both installs `retarget.py` as a global executable, and installs `radiotool` as a global python module that you can use in other projects.  (However, retarget.py imports radiotool from the local subrepo, so you can make changes in the subrepo and test them locally without needing to install.)
 
 #### Notes:
 

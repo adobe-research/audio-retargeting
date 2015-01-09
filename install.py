@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import fnmatch
 import os
 import re
 import subprocess
@@ -48,6 +49,13 @@ def lib_status(lib):
     except subprocess.CalledProcessError:
         return False
 
+def has_descendant(root, pattern):
+    for _, _, filenames in os.walk(root):
+        if fnmatch.filter(filenames, pattern):
+            return True
+    return False
+
+
 def main():
 
     if os.path.isfile(LOGFILE): shutil.move(LOGFILE, LOGFILE+".bak")
@@ -56,13 +64,13 @@ def main():
     for i, lib in enumerate(EXT_LIBS):
         count = "[{i} of {n}]".format(i=i+1, n=len(EXT_LIBS))
         if lib_status(lib):
-            print("{lib:19} OK\t{count}".format(lib=lib, count=count))
+            print("{lib:19} OK  {count}".format(lib=lib, count=count))
         else:
             print("-- installing {lib} {count}".format(lib=lib, count=count))
             install(lib, ["brew", "install", lib])
 
 
-    print("\n*** Python modules ***")
+    print("\n*** External python modules ***")
     for i, mod in enumerate(PIPS):
         count = "[{i} of {n}]".format(i=i+1, n=len(PIPS))
         version = pip_status(mod)
@@ -70,7 +78,7 @@ def main():
             print("-- installing {mod}...".format(mod=mod))
             install(mod, ["pip", "install", mod])
             version = pip_status(mod)
-        print("{mod:19} v{version}\t{count}".format(mod=mod, version=version, count=count))
+        print("{mod:19} {version:8}  {count}".format(mod=mod, version=version, count=count))
 
     print("\n*** radiotool ****")
     mod = 'radiotool'
@@ -80,7 +88,10 @@ def main():
         with cd("radiotool"):
             install("radiotool", ["python", "setup.py", "install"])
         version = pip_status(mod)
-    print("{mod} v{version}".format(mod=mod, version=version))
+    print("{mod} {version}".format(mod=mod, version=version))
+    if not has_descendant('radiotool', '*.so'):
+        with cd("radiotool"):
+            install("in-place radiotool build", ["python", "setup.py", "build_ext", "--inplace"])
 
     print("\n*** retarget.py ***")
     install("retarget.py", ["python", "setup.py", "install"])

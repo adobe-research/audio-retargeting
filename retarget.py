@@ -4,6 +4,8 @@ import argparse
 import os
 import sys
 
+sys.path.insert(0, os.path.join(os.path.realpath(os.path.dirname(__file__)), "radiotool")) # add subrepo root to front of import search path, so that local "radiotool" will be found.
+
 from path import Path
 from radiotool.composer import Song
 from radiotool.algorithms import retarget
