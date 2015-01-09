@@ -1,8 +1,17 @@
-# retarget-py
+# Audio-retarget
 
-A simple CLI front-end to the retargeting features of--and installation instructions for--the [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library.
+This repository contains:
 
-The CLI is a command named `retarget.py` or `retarget` (depending on how it's installed, see below).  For example, to retarget a song to be 30 seconds long, use:
+* `radiotool` -- The [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library.
+* `retarget.py` -- A simple CLI front-end to the retargeting features of `radiotool`
+
+`radiotool` is included here as a [git subrepo](https://github.com/ingydotnet/git-subrepo).  This means that the entire repo is available here and can be worked on locally.  (But if you want to pull a newer version from [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) or submit changes to it, you'll need to install the [git-subrepo](https://github.com/ingydotnet/git-subrepo) commands.)
+
+---
+
+## retarget.py
+
+The CLI is a command named `retarget.py` or `retarget` (if you want to build it, see below).  For example, to retarget a song to be 30 seconds long, use:
 
 ```
 $ retarget.py -l 30 mysong.wav
@@ -25,9 +34,11 @@ For complete usage instructions, run:
 $ retarget.py --help
 ```
 
+---
+
 ## Installation
 
-Prerequisites: 
+### Prerequisites: 
 
 * *Developers tools:*  You need to have a working development environment.  On OS X this could mean running `xcode-select --install`
 
@@ -35,29 +46,50 @@ Prerequisites:
 
 		$ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-  [homebrew](http://brew.sh) can then check that your development environment is OK is in order:
+  [homebrew](http://brew.sh) can then also check that your development environment is OK is in order:
 
       $ brew doctor
-
 
 * *Python:* You need to have a working installation of python 2.7.*.  On OS X, the system python should work, but you may want to install `/usr/local/bin/python` using [homebrew](http://brew.sh), to get the latest and to avoid needing to `sudo` in order to install the necessary python packages.
 
 		$ brew install python
 
 
-### Installing radiotool
+### Installing radiotool and retarget.py:
 
-1. [radiotool](https://github.com/ucbvislab/radiotool) requires that your system have [libsndfile](http://www.mega-nerd.com/libsndfile/) and [libsamplerate](http://www.mega-nerd.com/SRC/) installed.  On OS X, the easest way to install them is using [homebrew](http://brew.sh):
+Just run the install script:
 
-        $ brew install libsndfile libsamplerate
-    
-1. To be able to install [radiotool](https://github.com/ucbvislab/radiotool) you first need to install various other python libraries explicitly:
+	$ python install.py
 
-		$ pip install cython numpy scipy matplotlib 
-  		
-    Many of these dependencies would be handled automatically, but it's a good idea to do this separately in case anythong goes wrong.   For me all the above currently installs without a hitch on OS X 10.10.1, but YMMV.
-    
-    In particular, installing [scipy](http://www.scipy.org) is slow sometimes problematic.  If you have trouble, maybe one of these discussions might help:
+This can take a while to download and compile the various modules.  It's OK to run the script multiple times.  When all is installed, the output should look something like:
+
+```
+$ python install.py
+*** External libraries ***
+libsndfile OK [1 of 2]
+libsamplerate OK [2 of 2]
+
+*** Python modules ***
+cython v0.21.2 [1 of 7]
+numpy v1.9.1 [2 of 7]
+scipy v0.14.1 [3 of 7]
+matplotlib v1.4.2 [4 of 7]
+scikits.audiolab v0.11.0 [5 of 7]
+scikits.samplerate v0.3.3 [6 of 7]
+librosa v0.3.1 [7 of 7]
+
+*** radiotool ****
+radiotool v0.4.3
+
+*** retarget.py ***
+Installed /Users/ronen/.virtualenvs/retarget/bin/retarget.py
+```
+
+#### Notes:
+
+* if [libsndfile](http://www.mega-nerd.com/libsndfile/) or [libsamplerate](http://www.mega-nerd.com/SRC/) aren't already installed, the script will attempt to install them using `brew`.  If you don't have `brew`, you can install them manually.
+
+* Installing [scipy](http://www.scipy.org) is sometimes problematic.  It may require having a fortran compiler that's compatible with the compiler which build python.  If you have trouble, maybe one of these discussions might help:
     
     * [how-to-install-scipy-with-pip-on-mac-mountain-lion-os-x-v10-8](http://stackoverflow.com/questions/12092306/how-to-install-scipy-with-pip-on-mac-mountain-lion-os-x-v10-8)
     * [numpy_ox_x_10_9.sh](https://gist.github.com/goldsmith/7262122)
@@ -65,37 +97,16 @@ Prerequisites:
     
     See also the official installation instructions at [scipy.org/install](http://www.scipy.org/install.html)
     
-1. Once the above are installed, a few more to be installed next (these can't be done as a single step with the above because of dependencies in their setup definitions):
-    
-    	$ pip install scikits.audiolab scikits.samplerate librosa
-    	
-   These should all install without any trouble.
-       
-1. The latest version of [radiotool](https://github.com/ucbvislab/radiotool) is not currently available in `pip` so you must install from the source:
+* Radiotool gets installed from the local subrepo source rather than using `pip`, so any changes you make locally will get installed.
 
-    	$ git clone https://github.com/ucbvislab/radiotool.git
-	    $ cd radiotool
-        $ python setup.py install
-
-   This should be quick and easy.
-
-
-### Installing retarget.py
-
-Once you've installed radiotool as per the above instructions, installing `retarget.py` should be easy:
-
-    	$ git clone https://github.com/ronen/retarget-py.git
-	    $ cd retarget-py
-        $ python setup.py install
-        
-This will install `retarget.py` into your path.  `retarget.py` is a python script that depends at runtime on radiotool and its dependencies having been succesfully installed.
 
 ### (Optional) Creating a standalone `retarget` executable
 
-Once you've installed `radiotool` and `retarget.py`, you can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
+You can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
 
 Unfortunately `radiotool` uses some libraries that tickle a bug in the current official release (2.1) of `pyinstaller`.  This has been fixed for future releases, but for now you need to install the latest version of pyinstaller from the source:
 
+		$ cd /some/other/work/directory
     	$ git clone https://github.com/pyinstaller/pyinstaller.git
 	    $ cd pyinstaller
         $ python setup.py install
