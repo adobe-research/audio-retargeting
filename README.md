@@ -66,28 +66,30 @@ This can take a while to download and compile the various modules.  It's OK to r
 ```
 $ python install.py
 *** External libraries ***
-libsndfile OK [1 of 2]
-libsamplerate OK [2 of 2]
+libsndfile          OK  [1 of 2]
+libsamplerate       OK  [2 of 2]
 
-*** Python modules ***
-cython v0.21.2 [1 of 7]
-numpy v1.9.1 [2 of 7]
-scipy v0.14.1 [3 of 7]
-matplotlib v1.4.2 [4 of 7]
-scikits.audiolab v0.11.0 [5 of 7]
-scikits.samplerate v0.3.3 [6 of 7]
-librosa v0.3.1 [7 of 7]
+*** External python modules ***
+cython              0.21.1    [1 of 7]
+numpy               1.9.1     [2 of 7]
+scipy               0.14.0    [3 of 7]
+matplotlib          1.4.2     [4 of 7]
+scikits.audiolab    0.11.0    [5 of 7]
+scikits.samplerate  0.3.3     [6 of 7]
+librosa             0.3.1     [7 of 7]
 
 *** radiotool ****
-radiotool v0.4.3
+radiotool 0.4.3
 
 *** retarget.py ***
-Installed /Users/ronen/.virtualenvs/retarget/bin/retarget.py
+Installed /usr/local/bin/retarget.py
 ```
 
 #### Notes:
 
-* if [libsndfile](http://www.mega-nerd.com/libsndfile/) or [libsamplerate](http://www.mega-nerd.com/SRC/) aren't already installed, the script will attempt to install them using `brew`.  If you don't have `brew`, you can install them manually.
+* If [libsndfile](http://www.mega-nerd.com/libsndfile/) or [libsamplerate](http://www.mega-nerd.com/SRC/) aren't already installed, the script will attempt to install them using `brew`.  If you don't have `brew`, you can install them manually.
+
+* `radiotool` and `retarget.py` require the latest versions of the external modules as listed in the above output.  But this script doesn't check python module versions; if any version of a python module (including `radiotool`) is already installed, this script won't try to override it with a newer version.  So if you already have older versions installed and need to update them, you'll need to do that manually (using `pip install --upgrade`)
 
 * Installing [scipy](http://www.scipy.org) is sometimes problematic.  It may require having a fortran compiler that's compatible with the compiler which build python.  If you have trouble, maybe one of these discussions might help:
     

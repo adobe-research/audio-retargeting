@@ -56,7 +56,7 @@ def main():
     for i, lib in enumerate(EXT_LIBS):
         count = "[{i} of {n}]".format(i=i+1, n=len(EXT_LIBS))
         if lib_status(lib):
-            print("{lib} OK {count}".format(lib=lib, count=count))
+            print("{lib:19} OK\t{count}".format(lib=lib, count=count))
         else:
             print("-- installing {lib} {count}".format(lib=lib, count=count))
             install(lib, ["brew", "install", lib])
@@ -70,7 +70,7 @@ def main():
             print("-- installing {mod}...".format(mod=mod))
             install(mod, ["pip", "install", mod])
             version = pip_status(mod)
-        print("{mod} v{version} {count}".format(mod=mod, version=version, count=count))
+        print("{mod:19} v{version}\t{count}".format(mod=mod, version=version, count=count))
 
     print("\n*** radiotool ****")
     mod = 'radiotool'
