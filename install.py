@@ -60,6 +60,11 @@ def main():
 
     if os.path.isfile(LOGFILE): shutil.move(LOGFILE, LOGFILE+".bak")
 
+    try:
+        subprocess.check_output(["which", "pip"])
+    except subprocess.CalledProcessError:
+        sys.exit ("Can't install:  'pip' not found on your system.  Please install it or upgrade to python 2.7.9 (which includes pip by default)")
+
     print("*** External libraries ***")
     for i, lib in enumerate(EXT_LIBS):
         count = "[{i} of {n}]".format(i=i+1, n=len(EXT_LIBS))
