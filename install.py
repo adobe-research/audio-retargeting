@@ -38,9 +38,12 @@ def install(obj, cmd):
         sys.exit("Error installing {obj}.  See log in '{logfile}'".format(obj=obj, logfile=LOGFILE))
 
 def pip_status(mod):
-    output = subprocess.check_output(["pip", "show", mod], stderr=subprocess.STDOUT)
-    m = re.search('Version:\s*(\S+)', output, re.MULTILINE)
-    return None if m is None else m.group(1)
+    try:
+        output = subprocess.check_output(["pip", "show", mod], stderr=subprocess.STDOUT)
+        m = re.search('Version:\s*(\S+)', output, re.MULTILINE)
+        return None if m is None else m.group(1)
+    except subprocess.CalledProcessError, e:
+        return None
 
 def lib_status(lib):
     try:
