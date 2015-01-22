@@ -51,9 +51,10 @@ $ retarget.py --help
 
       $ brew doctor
 
-* *Python:* You need to have a working installation of python 2.7.*.  On OS X, the system python should work, but you may want to install `/usr/local/bin/python` using [homebrew](http://brew.sh), to get the latest and to avoid needing to `sudo` in order to install the necessary python packages.
+* *Python:* You need to have a working installation of python 2.7.*, including `pip`.  On OS X, the system python does not include `pip` by default and will likely require you to `sudo` to install the necessary components. Strongly recommended instead:
 
-		$ brew install python
+		$ brew install python    # this includes 'pip'
+		
 
 
 ### Installing radiotool and retarget.py:
