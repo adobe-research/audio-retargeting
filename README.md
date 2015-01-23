@@ -1,5 +1,10 @@
 # audio-retargeting
 
+-------
+**QUICK DOWNLOAD** If you just want to try out command-line program (on OS X) you can skip the python installation and just grab the latest version of the standalone executable from https://github.com/adobe-research/audio-retargeting/releases/download/v0.1.0/retarget
+
+-------
+
 This repository contains:
 
 * `radiotool` -- The [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library. 
