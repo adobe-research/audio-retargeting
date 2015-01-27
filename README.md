@@ -1,48 +1,56 @@
 # audio-retargeting
 
--------
-**QUICK DOWNLOAD** If you just want to try out command-line program (on OS X) you can skip the python installation and just grab the latest version of the standalone executable from https://github.com/adobe-research/audio-retargeting/releases/download/v0.1.0/retarget
+This repository provides an OS X executable named `retarget` which demonstrates the ability to change the length of a piece of music.  (It also contains the Python source, for those who want to delve deeper or run on a different platform; see documentation installation details below)
+
+## Download the `retarget` command:
+
+Download the executable from https://github.com/adobe-research/audio-retargeting/releases/download/v0.2.0/retarget 
+
+## `retarget` Usage:
+
+The general form of the command is:
+
+```
+$ retarget [options] INPUT.wav
+
+```
+
+Its default behavior (without any options) is to produce a version of the input music, retargeted to 60 seconds long.  For an input name mytrack.wav, the output by default will be named mytrack-60.wav
+
+Note that the first time you run this program for a given input file, it will take some time to analyze the song -- but it will cache the analysis.  Subsequent runs for the same input file will be very fast, even with different retargeting options.
+
+The program has two main capabilities:
+
+* **_Always:_ Retarget to a new length.**  You can choose the length in seconds via the `--length` option, e.g.
+
+        $ retarget --length 120 mytrack.wav
+
+  By default the output music will start and end with the start and end of the input music (and the middle will be trimmed or extended as needed).  The `--no-start` and `--no-end` options allow the program to start or end in the middle of the music so it will need to make fewer changes to meet the target length.
+
+* **_Optionally:_ Place interesting musical "changes" at specific times.**  You can use the `--change` option to specify a time in seconds at which the program should place a musical change.  E.g.
+
+        $ retarget --length 120 --change 32 mytrack.wav
+        
+  You can specify the `--change` argument more than once but it may have trouble meeting the requirements if you give too many.  Note also that if you specify change times, that implies `--no-start` and `--no-end`.
+  
+For a complete list of options, run `retarget --help`
+
 
 -------
+## Python Source Installation and Use
+
+For those who want to run `retarget` on a platform other than OS X or want to delve deeper into the Python code...
+
 
 This repository contains:
 
 * `radiotool` -- The [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) library. 
   > `radiotool` is included here as a [git subrepo](https://github.com/ingydotnet/git-subrepo).  This means that a copy of the source is available here and can be worked on locally.  (But if you want to pull a newer version from [ucbvislab/radiotool](https://github.com/ucbvislab/radiotool) or submit changes to it, you'll need to install the [git-subrepo](https://github.com/ingydotnet/git-subrepo) commands.)
 
-* `retarget.py` -- A simple CLI front-end to the retargeting features of `radiotool`
-
-
----
-
-## retarget.py
-
-The CLI is a command named `retarget.py` or `retarget` (if you want to build it, see below).  For example, to retarget a song to be 30 seconds long, use:
-
-```
-$ retarget.py -l 30 mysong.wav
-input:	mysong.wav
-output:	mysong-30.wav
-length:	30
-change_points:
-start:	True
-end:	True
-cache:	/Users/ronen/Library/Caches/retarget
-Retargeting...
-Wrote mysong-30.wav
-```
-	
-This script uses [radiotool](https://github.com/ucbvislab/radiotool)'s caching mechanism: The first time you run it for a given input file will take some time to analyze the song and will cache the .  Subsequent runs with different options for the same input will be very fast.
-
-For complete usage instructions, run:
-
-```
-$ retarget.py --help
-```
-
----
+* `retarget.py` -- A simple CLI front-end to the retargeting features of `radiotool`.  This is the script that gets compiled (using [pyinstaller](https://github.com/pyinstaller/pyinstaller)) to produce the standalone `retarget` command.  See Usage instructions above for how to run it, once you have installed the necessary environment as described below.
 
 ## Installation
+
 
 ### Prerequisites: 
 
@@ -56,15 +64,16 @@ $ retarget.py --help
 
       $ brew doctor
 
-* *Python:* You need to have a working installation of python 2.7.*, including `pip`.  On OS X, the system python does not include `pip` by default and will likely require you to `sudo` to install the necessary components. Strongly recommended instead:
+* *Python:* You need to have a working installation of python 2.7.*, including `pip`.  On OS X, the system python does not include `pip` by default and will likely require you to `sudo` to install the necessary components. To simplify setup it's highly recommended that you install a /usr/local version of python 2.7.9:
 
 		$ brew install python    # this includes 'pip'
-		
 
 
 ### Installing radiotool and retarget.py:
 
-Just run the install script:
+If you are familiar with [virtualenv](http://virtualenv.readthedocs.org) or [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org) you could create a virtualenv to install this all in.
+
+This repo includes an installation script that, if all goes well, will take care of everything for you:
 
 	$ python install.py
 
@@ -111,7 +120,7 @@ This both installs `retarget.py` as a global executable, and installs `radiotool
 * Radiotool gets installed from the local subrepo source rather than using `pip`, so any changes you make locally will get installed.
 
 
-### (Optional) Creating a standalone `retarget` executable
+### (Optional) Creating the standalone `retarget` executable
 
 You can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
 
@@ -119,9 +128,9 @@ Unfortunately `radiotool` uses some libraries that tickle a bug in the current o
 
 		$ cd /some/other/work/directory
     	$ git clone https://github.com/pyinstaller/pyinstaller.git
-	    $ cd pyinstaller
-        $ python setup.py install
-
+    	$ cd pyinstaller
+		$ python setup.py install
+        
 You can then run pyinstaller, with some necessary magic options for it to succesfully do the build.
 
 		$ cd retarget.py
@@ -137,11 +146,11 @@ You can then run pyinstaller, with some necessary magic options for it to succes
 			--log-level=ERROR \
 			retarget.py
 			
-(You may see `RuntimeError: The WebAgg backend requires Tornado.` and `UserWarning: error getting fonts from fc-list`.  These can be safely ignored.)
+(You may see errors `RuntimeError: The WebAgg backend requires Tornado.` and/or `UserWarning: error getting fonts from fc-list`.  These can be safely ignored.)
 
 The resulting executable is`dist/retarget`.  It can be run by anyone with a similar platform to the one you build it on, without needing to perform any of the installation steps listed above.
 
     	$ dist/retarget --help
 	    ...
-    	$ cp dist/retarget /some/shared/bin/directory
+    	$ cp dist/retarget /wherever/you/want/it/to/live
 
