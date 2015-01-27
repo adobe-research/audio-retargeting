@@ -64,20 +64,22 @@ This repository contains:
 
       $ brew doctor
 
-* *Python:* You need to have a working installation of python 2.7.*, including `pip`.  On OS X, the system python does not include `pip` by default and will likely require you to `sudo` to install the necessary components. To simplify setup it's highly recommended that you install a /usr/local version of python 2.7.9:
+* *Python:* You need to have a working installation of python 2.7.*, including `pip`.  On OS X, the system python does not include `pip` by default and will likely require you to `sudo` to install the necessary components. It's highly recommended that you use `brew` to install python 2.7.9 (which includes `pip`) into `/usr/local/bin`:
 
-		$ brew install python    # this includes 'pip'
+		$ brew install python
 
 
 ### Installing radiotool and retarget.py:
 
-If you are familiar with [virtualenv](http://virtualenv.readthedocs.org) or [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org) you could create a virtualenv to install this all in.
+If you are familiar with [virtualenv](http://virtualenv.readthedocs.org) or [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org) you could create an empty virtualenv to install this all in.
 
 This repo includes an installation script that, if all goes well, will take care of everything for you:
 
 	$ python install.py
 
-This can take a while to download and compile the various modules.  It's OK to run the script multiple times.  When all is installed, the output should look something like:
+(If all *doesn't* go wel, an installation log will be left in `install.log`)
+
+This can take a while to download and compile the various modules.  It's OK to run the script multiple times, it won't try to re-install things that are already installed.  When all is installed, the output should look something like:
 
 ```
 $ python install.py
@@ -122,7 +124,7 @@ This both installs `retarget.py` as a global executable, and installs `radiotool
 
 ### (Optional) Creating the standalone `retarget` executable
 
-You can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create a command that you can give to others, which they then can run without needing to install anything.
+You can use [pyinstaller](https://github.com/pyinstaller/pyinstaller) to create the standalone `retarget` command which you can give to others who work on the same platform as you, and which they then can run without needing to install anything.
 
 Unfortunately `radiotool` uses some libraries that tickle a bug in the current official release (2.1) of `pyinstaller`.  This has been fixed for future releases, but for now you need to install the latest version of pyinstaller from the source:
 
@@ -148,7 +150,7 @@ You can then run pyinstaller, with some necessary magic options for it to succes
 			
 (You may see errors `RuntimeError: The WebAgg backend requires Tornado.` and/or `UserWarning: error getting fonts from fc-list`.  These can be safely ignored.)
 
-The resulting executable is`dist/retarget`.  It can be run by anyone with a similar platform to the one you build it on, without needing to perform any of the installation steps listed above.
+The resulting executable is`dist/retarget`.  It has all the necessary libraries and python environment encapsulated in it -- so it can be run by anyone with a similar platform to the one you build it on, without needing to perform any of the installation steps listed above.
 
     	$ dist/retarget --help
 	    ...
