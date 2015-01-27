@@ -5,3 +5,4 @@ retarget.spec
 install.log
 *.bak
 *.so
+*.wav
