@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser(
         )
 parser.add_argument('-l', '--length', metavar='LENGTH', type=int, help='New length in seconds [default: {0}]'.format(defaultlength), default=defaultlength)
 parser.add_argument('-o', '--output', metavar='OUTFILE', type=str, help='Output WAV file.  [default: INFILE-LENGTH.wav]')
-parser.add_argument('-c', '--changes', metavar='POINT', type=int, action='append', help='Change point time in seconds. Can be provided multiple times. If change points are specified, that implies --no-start and --no-end')
+parser.add_argument('-c', '--change', metavar='POINT', type=int, action='append', help='Change point time in seconds. Can be provided multiple times. If change points are specified, that implies --no-start and --no-end')
 parser.add_argument('--start', dest='start', action='store_true', help='Require result to start at song start. [default]')
 parser.add_argument('--no-start', dest='start', action='store_false', help='Do not require result to start at song start')
 parser.add_argument('--end', dest='end', action='store_true', help='Require result to end at song end. [default]')
@@ -39,7 +39,7 @@ args = parser.parse_args()
 
 inpath = Path(args.input)
 length = args.length
-change_points = sorted(args.changes or [])
+change_points = sorted(args.change or [])
 if change_points: args.start = args.end = False
 
 if args.output:
